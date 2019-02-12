@@ -13,7 +13,7 @@ export async function getJwt() {
   return await AsyncStorage.getItem("token");
 }
 
-export async function routeCanActivate() {
+export async function storedTokenIsValid() {
   const token = await AsyncStorage.getItem("token");
   if (!token) return false;
 
@@ -33,5 +33,5 @@ export async function routeCanActivate() {
 export default {
   storeToken,
   logOut,
-  routeCanActivate
+  routeCanActivate: storedTokenIsValid
 };

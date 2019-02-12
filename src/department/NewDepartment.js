@@ -11,7 +11,7 @@ import {
 } from "native-base";
 import { StyleSheet } from "react-native";
 import { postDepartment } from "./DepartmentService";
-import { getJwt } from "../auth/AuthService";
+import { getJwt, storedTokenIsValid } from "../auth/AuthService";
 import BackButton from "../components/BackButton";
 import ActionButton from "../components/ActionButton";
 
@@ -63,6 +63,8 @@ class NewDepartment extends Component {
   };
 
   handleSubmit = async () => {
+    if (!storedTokenIsValid())  this.props.navigation.popToTop();
+
     const token = await getJwt();
     const { showNameInputError, department } = this.state;
     if (department.name == null || showNameInputError) {

@@ -16,7 +16,7 @@ import {
   SwipeRow
 } from "native-base";
 import { deleteDepartment, getDepartments } from "./DepartmentService";
-import { getJwt, logOut } from "../auth/AuthService";
+import { getJwt, logOut, storedTokenIsValid } from "../auth/AuthService";
 
 class DepartmentList extends Component {
   state = {
@@ -34,7 +34,7 @@ class DepartmentList extends Component {
   };
 
   async componentDidMount() {
-    this._loadDepartments();
+    await this._loadDepartments();
   }
 
   handleNewDepartment = screenName => {
@@ -58,6 +58,8 @@ class DepartmentList extends Component {
   };
 
   _loadDepartments = async () => {
+    if (!storedTokenIsValid())  this.props.navigation.popToTop();
+
     const token = await getJwt();
     try {
       const { data } = await getDepartments(token);
@@ -66,9 +68,12 @@ class DepartmentList extends Component {
       this.setState({ error: e });
       alert(`Something happened: ${e}`);
     }
+
   };
 
   _onRefresh = async () => {
+    if (!storedTokenIsValid())  this.props.navigation.popToTop();
+
     const token = await getJwt();
     this.setState({ refreshing: true });
     const { data } = await getDepartments(token);

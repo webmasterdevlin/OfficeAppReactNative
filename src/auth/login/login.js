@@ -16,7 +16,7 @@ import {
   H1
 } from "native-base";
 import { postLogin, postRegistration } from "../../user/UserService";
-import { routeCanActivate, storeToken } from "../AuthService";
+import { storedTokenIsValid, storeToken } from "../AuthService";
 class Login extends Component {
   state = {
     userModel: {
@@ -50,7 +50,7 @@ class Login extends Component {
   };
 
   _handleAuthenticated = async () => {
-    if (await routeCanActivate()) {
+    if (await storedTokenIsValid()) {
       this.props.navigation.navigate("departmentList");
     }
   };

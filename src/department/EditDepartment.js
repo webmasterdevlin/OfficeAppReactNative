@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { getDepartment, putDepartment } from "./DepartmentService";
 import { Container, Footer, Content, Form, Input, Item } from "native-base";
-import { getJwt } from "../auth/AuthService";
+import { getJwt, storedTokenIsValid } from "../auth/AuthService";
 import BackButton from "../components/BackButton";
 import ActionButton from "../components/ActionButton";
 
@@ -37,14 +37,7 @@ class EditDepartment extends Component {
   };
 
   async componentDidMount() {
-    const token = await getJwt();
-    try {
-      const id = this.props.navigation.getParam("id");
-      const { data } = await getDepartment(id, token);
-      this.setState({ department: data });
-    } catch (e) {
-      this.handleGoBack();
-    }
+    await this._loadDepartment()
   }
 
   handleOnChangeText = (key, val) => {
@@ -54,6 +47,8 @@ class EditDepartment extends Component {
   };
 
   handleSubmit = async () => {
+    if (!storedTokenIsValid())  this.props.navigation.popToTop();
+
     const token = await getJwt();
     try {
       await putDepartment(this.state.department, token);
@@ -70,6 +65,19 @@ class EditDepartment extends Component {
     navigation.goBack();
     navigation.state.params.onRefresh({ selected: true });
   };
+
+  _loadDepartment = async () => {
+    if (!storedTokenIsValid())  this.props.navigation.popToTop();
+
+    const token = await getJwt();
+    try {
+      const id = this.props.navigation.getParam("id");
+      const { data } = await getDepartment(id, token);
+      this.setState({ department: data });
+    } catch (e) {
+      this.handleGoBack();
+    }
+  }
 
   render() {
     const { name, description, head, code } = this.state.department;
