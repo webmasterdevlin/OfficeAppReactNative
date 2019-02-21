@@ -1,0 +1,34 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'OfficeAppReactNative' do
+  pod 'AppCenter/Crashes', '~> 1.13.0'
+  pod 'AppCenter/Analytics', '~> 1.13.0'
+  pod 'AppCenterReactNativeShared', '~> 1.12.0'
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for OfficeAppReactNative
+
+  
+
+  platform :ios, '9.0'
+  target 'OfficeAppReactNativeTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'OfficeAppReactNative-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for OfficeAppReactNative-tvOS
+
+  target 'OfficeAppReactNative-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
